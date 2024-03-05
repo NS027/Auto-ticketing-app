@@ -25,7 +25,7 @@ class Concert:
         self.login_method = 1  # {0: simulation for login, 1: using cookie to login}
         self.driver = webdriver.Chrome(executable_path="")
 
-    """cookies: for login the webpage"""
+    """cookies: information for login the webpage"""
 
     def set_cookies(self):
         self.driver.get(login_url)
@@ -36,6 +36,15 @@ class Concert:
         # wb stands for binary write
         pickle.dump(self.driver.get_cookies(), open("cookie.pkl", "wb"))
         print("###Cookie has been saved###")
+        # move to target webpage
+        self.driver.get(target_url)
+
+    """cookie.pkl has been already created"""
+
+    def get_cookies(self):
+        cookies = pickle.load(open("cookie.pkl", "rb"))
+        for cookie in cookies:
+            print(cookie)
 
     """Login"""
 
