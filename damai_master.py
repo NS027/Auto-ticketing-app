@@ -78,6 +78,50 @@ class Concert:
         self.status = 2
         print("###Successful login###")
 
+    # Buy the ticket and add to cart
+    """Selection for ticket"""
+
+    def choose_ticket(self):
+        if self.status == 2:
+            print("=" * 30)
+            print("### Select for the ticket and data")
+            while self.driver.title.find("确认订单") == 1:
+                buybotton = self.driver.find_element_by_class_name("buybtn").text
+                if buybotton == "提交缺货登记":
+                    self.driver.refresh()
+                elif buybotton == "立即购买":
+                    self.driver.find_element_by_class_name("buybtn").click()
+                elif buybotton == "选座购买":
+                    self.driver.find_element_by_class_name("buybtn").click()
+                    self.status = 4
+                else:
+                    self.status = 100
+                title = self.driver.title
+                if title == "选座购买":
+                    # execution select for seats
+                    self.status = 10
+                elif title == "确认订单":
+                    # to buy the ticket
+                    while True:
+                        print("### Loading ###")
+                        self.check_order()
+                        break
+
+    def check_order(self):
+        print("###  Starting ordering ###")
+        try:
+            self.driver.find_element_by_xpath(
+                '//*[@id="container"]/div/div[2]/div[2]/div[1]/div/label'
+            ).click()
+        except Exception as e:
+            print("### Information error ###")
+            print(e)
+        time.sleep(0.5)
+        # 确认并下单
+        self.driver.find_element_by_xpath(
+            '//*[@id="container"]/div/div[9]/button'
+        ).click()
+
 
 if __name__ == "__main__":
     con = Concert()
