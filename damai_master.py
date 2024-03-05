@@ -6,6 +6,8 @@ It is just for testing.
 
 import os
 from selenium import webdriver
+import time
+import pickle  # to memorized the info
 
 # main webpage
 damai_url = "https://www.damai.cn/"
@@ -23,6 +25,18 @@ class Concert:
         self.login_method = 1  # {0: simulation for login, 1: using cookie to login}
         self.driver = webdriver.Chrome(executable_path="")
 
+    """cookies: for login the webpage"""
+
+    def set_cookies(self):
+        self.driver.get(login_url)
+        print("###Please scan the QR code to login###")
+        time.sleep(10)
+        print("###Successfully Login###")
+        # create the cookie.pkl
+        # wb stands for binary write
+        pickle.dump(self.driver.get_cookies(), open("cookie.pkl", "wb"))
+        print("###Cookie has been saved###")
+
     """Login"""
 
     def login(self):
@@ -37,3 +51,4 @@ class Concert:
             else:
                 self.dirver.get(target_url)
                 # Using selenium to pass login info
+                self.get_cookies()
