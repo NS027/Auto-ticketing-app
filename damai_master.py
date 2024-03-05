@@ -3,7 +3,6 @@ This is a automatic getting ticket programm.
 It is just for testing.
 
 """
-
 import os
 from selenium import webdriver
 import time
@@ -23,7 +22,7 @@ class Concert:
     def __init__(self):
         self.status = 0  # for current status
         self.login_method = 1  # {0: simulation for login, 1: using cookie to login}
-        self.driver = webdriver.Chrome(executable_path="")
+        self.driver = webdriver.Chrome()
 
     """cookies: information for login the webpage"""
 
@@ -34,7 +33,7 @@ class Concert:
         print("###Successfully Login###")
         # create the cookie.pkl
         # wb stands for binary write
-        pickle.dump(self.driver.get_cookies(), open("cookie.pkl", "wb"))
+        pickle.dump(self.driver.get_cookies(), open("cookies.pkl", "wb"))
         print("###Cookie has been saved###")
         # move to target webpage
         self.driver.get(target_url)
@@ -42,9 +41,15 @@ class Concert:
     """cookie.pkl has been already created"""
 
     def get_cookies(self):
-        cookies = pickle.load(open("cookie.pkl", "rb"))
+        cookies = pickle.load(open("cookies.pkl", "rb"))
         for cookie in cookies:
-            print(cookie)
+            cookie_dict = {
+                'domain': '.damai.cn',
+                'name': cookie.get('name'),
+                'value': cookie.get('value')
+            }
+            self.driver.add_cookie(cookie_dict)
+        print("###Loading cookie successful")
 
     """Login"""
 
@@ -54,10 +59,15 @@ class Concert:
             self.driver.get(login_url)
         elif self.login_method == 1:
             # if there is no cookie.pkl
-            if not os.path.exists("cookie.pkl"):
+            if not os.path.exists("cookies.pkl"):
                 # for login
                 self.set_cookies()
             else:
                 self.dirver.get(target_url)
                 # Using selenium to pass login info
                 self.get_cookies()
+
+
+if __name__ == "__main__":
+    con = Concert()
+    con.login()
