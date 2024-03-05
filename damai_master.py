@@ -85,7 +85,7 @@ class Concert:
         if self.status == 2:
             print("=" * 30)
             print("### Select for the ticket and data")
-            while self.driver.title.find("确认订单") == 1:
+            while self.driver.title.find("确认订单") == -1:
                 buybotton = self.driver.find_element_by_class_name("buybtn").text
                 if buybotton == "提交缺货登记":
                     self.driver.refresh()
@@ -126,3 +126,5 @@ class Concert:
 if __name__ == "__main__":
     con = Concert()
     con.login()
+    con.choose_ticket()
+    con.check_order()
