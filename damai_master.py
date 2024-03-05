@@ -4,6 +4,7 @@ It is just for testing.
 
 """
 
+import os
 from selenium import webdriver
 
 # main webpage
@@ -23,3 +24,16 @@ class Concert:
         self.driver = webdriver.Chrome(executable_path="")
 
     """Login"""
+
+    def login(self):
+        """Simulation for login"""
+        if self.login_method == 0:
+            self.driver.get(login_url)
+        elif self.login_method == 1:
+            # if there is no cookie.pkl
+            if not os.path.exists("cookie.pkl"):
+                # for login
+                self.set_cookies()
+            else:
+                self.dirver.get(target_url)
+                # Using selenium to pass login info
