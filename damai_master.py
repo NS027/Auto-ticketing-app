@@ -3,6 +3,7 @@ This is a automatic getting ticket programm.
 It is just for testing.
 
 """
+
 import os
 from selenium import webdriver
 import time
@@ -21,7 +22,8 @@ class Concert:
 
     def __init__(self):
         self.status = 0  # for current status
-        self.login_method = 1  # {0: simulation for login, 1: using cookie to login}
+        # {0: simulation for login, 1: using cookie to login}
+        self.login_method = 1
         self.driver = webdriver.Chrome()
 
     """cookies: information for login the webpage"""
@@ -44,9 +46,9 @@ class Concert:
         cookies = pickle.load(open("cookies.pkl", "rb"))
         for cookie in cookies:
             cookie_dict = {
-                'domain': '.damai.cn',
-                'name': cookie.get('name'),
-                'value': cookie.get('value')
+                "domain": ".damai.cn",
+                "name": cookie.get("name"),
+                "value": cookie.get("value"),
             }
             self.driver.add_cookie(cookie_dict)
         print("###Loading cookie successful")
@@ -66,6 +68,15 @@ class Concert:
                 self.dirver.get(target_url)
                 # Using selenium to pass login info
                 self.get_cookies()
+
+    """Open browser"""
+
+    def enter_concert(self):
+        print("###Entering the webpage###")
+        self.login()
+        self.driver.refresh()
+        self.status = 2
+        print("###Successful login###")
 
 
 if __name__ == "__main__":
